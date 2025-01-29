@@ -2,10 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const todoRoutes = require('./routes/todos');
+const todoRoutes = require('./routes/route_todo');
 
 const app = express();
-const baseUrl = '192.168.3.39';
+const baseUrl = '192.168.1.29';
 
 
 // Middleware
