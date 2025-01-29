@@ -16,7 +16,7 @@ app.use((req, res, next) => {
   next();
 });
 // Routes
-app.use('/api/todos', todoRoutes);
+app.use('/todo', todoRoutes);
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
@@ -25,4 +25,4 @@ mongoose.connect(process.env.MONGO_URI)
 
 // Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, baseUrl,() => console.log(`Server running on ${baseUrl}:${PORT}`));
+app.listen(PORT,baseUrl,() => console.log(`Server running on ${baseUrl}}:${PORT}`));
