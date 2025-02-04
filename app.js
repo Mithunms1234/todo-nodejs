@@ -10,11 +10,7 @@ baseUrl = '';
 
 // Middleware
 app.use(bodyParser.json());
-app.use((req, res, next) => {
-  const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-  console.log(`[${new Date().toISOString()}] ${clientIp} - ${req.method} ${req.originalUrl}`);
-  next();
-});
+
 // Routes
 app.use('/todo', todoRoutes);
 
@@ -24,13 +20,12 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((error) => console.log('Failed to connect to MongoDB', error));
 
   //get device ip
-const getIpAdress = () => {
-  baseUrl = os.networkInterfaces()['en0'][1]['address'];
-}
+// const getIpAdress = () => {
+//   baseUrl = os.networkInterfaces()['en0'][1]['address'];
+// }
 
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  getIpAdress();
   console.log(`Server running on ${baseUrl}}:${PORT}`);
 });
