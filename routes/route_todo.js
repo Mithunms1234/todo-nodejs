@@ -4,7 +4,7 @@ const router = express.Router();
 const todoController = require('../controller/todoController');
 const { body, validationResult, query, param } = require("express-validator");
 
- 
+
 const upload = multer();
 
 const validationErrorChecker = async (req, res, next) => {
@@ -34,11 +34,11 @@ router.put('/updateTodo', [
     query('completed').notEmpty().isBoolean().withMessage('completed is a bool value'),
     query('title').optional().isLength({ min: 3 }).withMessage('Title must be at least 3 characters long'),
 
-] ,validationErrorChecker,todoController.updateTodo);
+], validationErrorChecker, todoController.updateTodo);
 
 // Delete a TODO by ID
-router.delete('/deleteTodo/:id',[
+router.delete('/deleteTodo/:id', [
     param('id').notEmpty().isMongoId().withMessage('Invaild id format'),
-], validationErrorChecker,todoController.deleteTodo);
+], validationErrorChecker, todoController.deleteTodo);
 
 module.exports = router;

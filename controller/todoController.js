@@ -4,12 +4,17 @@ const Todo = require("../models/model_todo");
 //create a todo
 exports.createTodo = (async (req, res) => {
     try {
+        const getTodo = await Todo.find({ title: req.body.title });
+
+        if (getTodo.length > 0) {
+            res.status(201).json({ error: "Already exist" });
+        }
         const todo = new Todo({ title: req.body.title });
         const savedTodo = await todo.save();
         res.status(201).json(savedTodo);
     }
     catch (error) {
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error', error });
     }
 });
 
@@ -35,24 +40,25 @@ exports.getTodo = (async (req, res) => {
 //update all todo
 exports.updateTodo = (async (req, res) => {
     try {
+        []
         const id = req.query.id;
         const completed = req.query.completed;
-        const title = req.query.title;
-
-        const reqTodo = { completed: completed };
-        if (title !== undefined) reqTodo.title = title;
-
-        const resTodo = await Todo.findByIdAndUpdate(id, reqTodo, { new: true });
-
-        if (resTodo) {
-            return res.status(200).json({
-                message: `${resTodo.title || 'TODO'} is marked as ${resTodo.completed ? 'Completed' : 'Pending'}`,
-                data: { title: resTodo.title, id: resTodo.id, status: resTodo.completed }
-            });
+        if (completed != null) {
+            const resTodo = await Todo.findByIdAndUpdate(id, { completed }, { new: true });
+            if (resTodo) {
+                return res.status(200).json({
+                    message: `${resTodo.title || 'TODO'} is marked as ${resTodo.completed ? 'Completed' : 'Pending'}`,
+                    data: { title: resTodo.title, id: resTodo.id, status: resTodo.completed }
+                });
+            }
+            else {
+                return res.status(200).json({ message: `No Todo with this id-${id}` });
+            }
+        } else {
+            res.status(400).json({ error: "completed undefined" });
         }
-        else {
-            return res.status(200).json({ message: `No Todo with this id-${id}` });
-        }
+
+
     }
     catch (error) {
         res.status(500).json({ error });
